@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Angel Number Search</title>
+  <style>
+    /* 
+      ======== Global Reset & Base Styles ========
+      We’re creating a golden, nature-inspired, and slightly mystical style. 
+    */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      background: linear-gradient(135deg, #fef9e7 0%, #f9e4ad 100%);
+      color: #333;
+      line-height: 1.5;
+    }
+
+    /* 
+      ======== Header Styles ========
+      Using a subtle gold-tinted background with some transparency 
+      to convey a mystical vibe.
+    */
+    header {
+      text-align: center;
+      padding: 30px 20px;
+      background: rgba(212, 172, 13, 0.85); /* gold color with transparency */
+      color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    header h1 {
+      font-size: 2rem;
+      letter-spacing: 2px;
+      text-shadow: 1px 1px 2px #3e3e3e;
+    }
+
+    /*
+      ======== Main Container ========
+    */
+    main {
+      max-width: 750px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    /*
+      ======== Introduction Section ========
+      Explains what angel numbers are.
+    */
+    .introduction {
+      background: rgba(255, 255, 255, 0.6);
+      border: 2px solid #ccb973;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    }
+
+    .introduction h2 {
+      font-size: 1.5rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .introduction p {
+      font-size: 1rem;
+      color: #444;
+      margin-bottom: 10px;
+    }
+
+    /* 
+      ======== Search Container ========
+    */
+    .search-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .search-container input {
+      width: 220px;
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccb973;
+      border-radius: 4px;
+      outline: none;
+      margin-right: 8px;
+    }
+
+    .search-container button {
+      padding: 10px 16px;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background-color: #d4ac0d;
+      color: #fff;
+      transition: background-color 0.3s ease;
+    }
+
+    .search-container button:hover {
+      background-color: #b7950b; /* Darker gold */
+    }
+
+    /*
+      ======== Result Card ========
+      A golden, mystical card style to display the angel number’s meaning.
+    */
+    .result-card {
+      background: rgba(255, 247, 230, 0.8);
+      border: 2px solid #ccb973;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .result-card h2 {
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+      color: #444;
+    }
+
+    .result-card p {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 0;
+      white-space: pre-line; /* if multiline content is needed */
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Angel Numbers</h1>
+  </header>
+
+  <main>
+    <!-- Introduction / Explanation Section -->
+    <section class="introduction">
+      <h2>What Are Angel Numbers?</h2>
+      <p>
+        Angel numbers are special sequences of repeating digits—often seen as a form of spiritual guidance 
+        or a “sign” from the universe. Each angel number carries a unique, deeper meaning that may 
+        offer insight into your path, purpose, or the energies around you.
+      </p>
+      <p>
+        Explore these sacred sequences to discover personal messages and encourage self-awareness, growth, and clarity.
+      </p>
+    </section>
+
+    <!-- Search Container -->
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Enter an angel number..." />
+      <button id="searchBtn">Search</button>
+    </div>
+
+    <!-- Display Area for Results -->
+    <div id="resultArea"></div>
+  </main>
+
+  <script>
+    // Our angel numbers dataset
+    const angelNumbers = [
+  // =========================
+  //  Three-Digit Repetitions
+  // =========================
+  {
+    number: "111",
+    meaning: "When you repeatedly notice 111, it signifies a strong alignment between your thoughts and the energy of the universe. This sequence is a powerful reminder that positive thinking and focused intentions have the ability to manifest your dreams more quickly than you might expect. It often appears when you’re on the brink of a new beginning, encouraging you to trust yourself and embrace the creative power you hold."
+  },
+  {
+    number: "222",
+    meaning: "Seeing 222 frequently hints at the need for balance and harmony in your life. It may show up when you’re facing challenging circumstances, urging you to keep the faith, stay centered, and remember that periods of growth sometimes feel uncomfortable. This angelic sign also reassures you that everything is unfolding according to a divine timetable, and your patience will be rewarded."
+  },
+  {
+    number: "333",
+    meaning: "The recurring presence of 333 reflects a stage of spiritual expansion and creative self-expression. It often appears when you are being guided by higher energies—ascended masters, guides, or angels—who encourage you to tap into your unique gifts and let your talents shine. The universe is nudging you to trust your intuition, embrace personal growth, and spread joy or inspiration to those around you."
+  },
+  {
+    number: "444",
+    meaning: "The number 444 typically symbolizes stability, grounding, and strong foundational energy. It may arrive when your angels want to assure you that you’re protected and supported, even if you’re feeling uncertain or overwhelmed. This sequence serves as a gentle reminder to keep working diligently toward your goals, as your spiritual team is helping you build the life you truly desire."
+  },
+  {
+    number: "555",
+    meaning: "The sequence 555 is closely associated with transformation, freedom, and the winds of change. You might notice this number when you’re ready to step away from old habits, environments, or relationships that no longer serve your highest good. Although change can sometimes feel daunting, 555 encourages you to welcome new opportunities with courage and optimism, trusting that these shifts will lead to meaningful growth."
+  },
+  {
+    number: "666",
+    meaning: "Despite common misconceptions, 666 often highlights the importance of balance between the spiritual and material aspects of life. It calls attention to unconditional love—both for yourself and others—and urges you to refocus on nurturing habits. When 666 appears, you’re being invited to release any unnecessary fears about finances or worldly concerns and remember that true harmony arises from within."
+  },
+  {
+    number: "777",
+    meaning: "If 777 keeps showing up, it’s a potent indicator of spiritual awakening, divine guidance, and your alignment with higher wisdom. This sequence can appear when you’re delving deeper into your life purpose, learning important lessons, or exploring new levels of self-discovery. The repeated 7s reassure you that you’re on the right track, encouraging you to remain open to the insights and epiphanies flowing your way."
+  },
+  {
+    number: "888",
+    meaning: "The number 888 resonates strongly with abundance, success, and the cyclical nature of giving and receiving. When it shows up repeatedly, it serves as a prompt to be mindful of the energy you’re putting out, as your efforts and generous spirit are poised to return multiplied blessings. This number also encourages you to trust your ability to manifest financial stability or achieve professional milestones, as long as you remain steadfast in your vision."
+  },
+  {
+    number: "999",
+    meaning: "When 999 appears, it signals the conclusion of a significant cycle and the beginning of a new chapter in your life. You might be called to release outworn patterns, beliefs, or relationships that have run their course. This number encourages forgiveness, self-compassion, and readiness to embark on a fresh journey, reminding you that every ending prepares the way for a brighter, more fulfilling beginning."
+  },
+
+  // =========================
+  //  Four-Digit Repetitions
+  // =========================
+  {
+    number: "1111",
+    meaning: "Seeing 1111 repeatedly is often interpreted as a call to spiritual awakening and heightened awareness. It reminds you that your thoughts carry immense power, nudging you to keep your mindset aligned with positivity and gratitude. This sequence can also herald gateways of opportunity opening up in your life, ensuring that if you focus on pure intentions, remarkable manifestations will follow."
+  },
+  {
+    number: "2222",
+    meaning: "The sequence 2222 underscores themes of balance, patience, and partnership. It often shows up to reassure you that the seeds you’ve planted—whether in relationships, career endeavors, or personal aspirations—are germinating beneath the surface, even if you don’t yet see results. By keeping faith in the process and approaching your goals with consistent, heartfelt effort, you’ll find harmony and positive outcomes blossom in unexpected ways."
+  },
+  {
+    number: "3333",
+    meaning: "When 3333 appears, it draws attention to the power of your creative and intuitive gifts. Higher spiritual forces may be urging you to express yourself more freely, be it through art, writing, public speaking, or any other medium that resonates with your soul. This number can also signify support from ascended masters, offering guidance in strengthening your self-confidence and uplifting those around you with your unique talents."
+  },
+  {
+    number: "4444",
+    meaning: "Seeing 4444 emphasizes the importance of building and maintaining strong foundations across all areas of your life. Your angels may be reminding you that perseverance, discipline, and practical planning form the bedrock of long-term success. Trust that you’re being guided and supported in subtle ways—whether it’s through inner nudges or synchronistic events—so you can continue moving forward with assurance."
+  },
+  {
+    number: "5555",
+    meaning: "Recurring 5555 strongly signals a life-altering transformation or major shift on the horizon. This could involve unexpected opportunities, new beginnings, or the release of limiting beliefs that hold you back from reaching your full potential. The angels want you to embrace these changes fearlessly, knowing that such pivotal moments can pave the way to a more liberated and authentic version of yourself."
+  },
+  {
+    number: "6666",
+    meaning: "When 6666 shows up frequently, it’s a gentle call to restore equilibrium in your personal, emotional, and spiritual life. The energy of 6 can remind you to reconnect with compassion—for others and for yourself—and to steer away from excessive worries over material concerns. By bringing love, empathy, and kindness into the forefront, you anchor yourself in a grounded, harmonious state that fosters inner peace."
+  },
+  {
+    number: "7777",
+    meaning: "Encountering 7777 suggests that you are in a profound stage of introspection, wisdom-gathering, and spiritual maturation. It may also be a sign that your soul is ready to progress to new levels of understanding or psychic development. Above all, 7777 carries a reassuring message that your journey is watched over by divine forces, guiding you with subtle yet potent synchronicities and insights."
+  },
+  {
+    number: "8888",
+    meaning: "The repeated appearance of 8888 resonates with limitless abundance, financial prosperity, and the power of manifestation. It serves as a reminder that what you give to the world—be it resources, time, or positive energy—often returns to you in amplified form. By acknowledging your innate ability to create prosperity through steadfast action and generosity, you open the door for even greater rewards."
+  },
+  {
+    number: "9999",
+    meaning: "9999 is a profound symbol that a key cycle or life stage has reached its ultimate conclusion. It encourages you to let go of past struggles, grievances, or attachments that prevent you from stepping into your next chapter with confidence. By releasing these old energies, you make room for powerful new beginnings, spiritual evolutions, and greater alignment with your higher purpose."
+  },
+
+  // ===================================
+  //  Repeated-Pairs (Skipping Duplicates)
+  //  1212 to 9898, excluding 2222, 3333,
+  //  4444, 5555, 6666, 7777, 8888, 9999
+  // ===================================
+  {
+    number: "1212",
+    meaning: "Seeing 1212 frequently can signify a powerful blending of spiritual awareness and balanced action in the physical world. This number often suggests you are in sync with the universe’s greater plan, highlighting that your positive mindset and proactive steps will open new doors. It encourages you to trust the timing of your life, stay optimistic, and recognize the endless possibilities that arise when you align thoughts and actions with higher guidance."
+  },
+  {
+    number: "1313",
+    meaning: "The sequence 1313 highlights the importance of creativity, authenticity, and courage in expressing your deepest truths. It signals that you may be on the cusp of personal breakthroughs—particularly in areas of self-expression, problem-solving, or spiritual insight. By remaining open to new ideas and trusting your inner spark, you’ll find the strength and inspiration needed to overcome obstacles and flourish."
+  },
+  {
+    number: "1414",
+    meaning: "Appearing as 1414, this angel number emphasizes practical planning merged with a positive outlook. It suggests that your highest visions can be realized when you take organized steps and maintain confidence in the eventual outcome. The combination of 1’s leadership and 4’s grounding energy indicates that you have both the initiative and the stability to build something truly meaningful over time."
+  },
+  {
+    number: "1515",
+    meaning: "A recurring 1515 often arrives to remind you that life is shaped by the thoughts you consciously—and unconsciously—entertain. This number sequence is a green light to release outdated beliefs and invite in positive shifts. As you stay present in each moment and remain open to personal evolution, new ideas and insights will lead you to brighter possibilities and enriched experiences."
+  },
+  {
+    number: "1616",
+    meaning: "When 1616 appears repeatedly, it calls you to balance nurturing your own needs and caring for others. The blend of 1 and 6 suggests an emphasis on personal growth, self-love, and emotional stability in relationships. By showing compassion while still honoring your boundaries, you create a harmonious environment that allows you and those you care for to thrive."
+  },
+  {
+    number: "1717",
+    meaning: "A pattern of 1717 can indicate that you’re stepping into a fresh chapter and aligning with your life purpose in a more profound way. The energy of these numbers nudges you to trust your inner wisdom, follow your intuition, and maintain a spirit of optimism even if the road ahead seems uncharted. The universe is supporting your forward momentum, encouraging you to act boldly on your inspired ideas."
+  },
+  {
+    number: "1818",
+    meaning: "Observing 1818 repeatedly is often a signal of financial or material changes on the horizon, typically for the better. It reminds you that prosperity is a dance of giving and receiving, urging you to remain generous and confident in your ability to attract resources. By blending practical action with a thankful heart, you magnetize opportunities that can bolster both your security and personal fulfillment."
+  },
+  {
+    number: "1919",
+    meaning: "The appearance of 1919 suggests a phase of closure and renewal, where old endings give rise to fresh starts. This number reassures you that letting go of what no longer aligns with your growth makes space for something far more uplifting. Focus on maintaining hope and courage; as you shed the past, new inspirations and healthier relationships are drawn to your energetic field."
+  },
+  {
+    number: "2020",
+    meaning: "Spotting 2020 frequently reminds you of the value of clear vision, planning, and faith in divine timing. The repeated 2 highlights partnership and cooperation, while 0 amplifies the unity and infinite potential of all things. This angelic sign reassures you that, even amid challenges, every piece is falling into place for your highest good, and patience will reveal how perfectly orchestrated life can be."
+  },
+  {
+    number: "2121",
+    meaning: "Recurring 2121 serves as a prompt to co-create your reality with the universe through positive thinking and deliberate action. Its pattern underscores that while you play an active role in shaping outcomes, you’re also supported by unseen forces that guide you toward your goals. Keep your mindset focused on what you desire rather than what you fear, and watch as synchronicities affirm your path."
+  },
+  {
+    number: "2323",
+    meaning: "Noticing 2323 often indicates a time to honor your individuality and look for creative ways to express yourself. Your angels may be urging you to remain open to collaboration or partnerships that bring fresh opportunities for growth. As you explore new modes of communication and artistic expression, you allow life to unfold in dynamic and fulfilling ways that benefit both you and those around you."
+  },
+  {
+    number: "2424",
+    meaning: "The appearance of 2424 hints at the importance of patience, perseverance, and meticulous attention to building a stable life structure. It points to a phase where consistent, grounded efforts will reap meaningful rewards. Though progress may feel incremental at times, trust that each step lays a brick in the foundation of something lasting and significant for your future."
+  },
+  {
+    number: "2525",
+    meaning: "When 2525 shows up, it signals a period of transition and adaptability, often leading to surprising breakthroughs. You’re being asked to remain flexible and open-minded, as the universe can bring unexpected twists that actually serve your highest good. By trusting your inner compass and embracing change, you’ll discover new avenues for personal expansion and happiness."
+  },
+  {
+    number: "2626",
+    meaning: "Repeatedly seeing 2626 draws attention to the harmony between the emotional and practical realms of your life. It may encourage you to evaluate your close relationships or daily routines to ensure they reflect mutual respect and positive energy. Finding equilibrium in these areas fosters a supportive environment that lets you move forward with clarity and emotional well-being."
+  },
+  {
+    number: "2727",
+    meaning: "The sequence 2727 highlights the importance of spiritual insight and introspection. It may appear during times of uncertainty, gently nudging you toward meditation, self-reflection, or deeper study of metaphysical principles. By exploring your inner world, you open yourself to a wealth of wisdom that can guide you through life’s complexities with greater peace and clarity."
+  },
+  {
+    number: "2828",
+    meaning: "Spotting 2828 indicates that positive financial or material changes may be within reach, but it also encourages you to stand firmly in your personal power. This combination of 2 and 8 suggests cooperation and abundance, reminding you that you have the capability to bring about the outcomes you desire. Trust your instincts, use your resources wisely, and let your innate leadership qualities shine."
+  },
+  {
+    number: "2929",
+    meaning: "The repeating pattern of 2929 points to pivotal endings that clear a path for new beginnings. While it can be bittersweet to let go of familiar situations, this angel number insists that better opportunities lie on the horizon. Give yourself grace during this transition and focus on the uplifted energy that follows every courageous decision to close one door and open another."
+  },
+  {
+    number: "3030",
+    meaning: "When 3030 catches your eye, it signals a beautiful blend of divine support and creative freedom. The influence of 0 can expand the energy of 3, giving you a heightened ability to express your ideas, emotions, or spiritual insights. You’re being reminded that stepping outside your comfort zone and sharing your gifts can lead to profound personal growth and collective inspiration."
+  },
+  {
+    number: "3131",
+    meaning: "Repeatedly encountering 3131 suggests a time to harness your creativity, intuition, and optimism in pursuit of your goals. It reflects the harmony of new beginnings (1) and self-expression (3), indicating that the way forward involves thinking outside the box. Trust that the universe backs your unique contributions, and don’t be afraid to turn your visionary ideas into tangible reality."
+  },
+  {
+    number: "3232",
+    meaning: "A pattern of 3232 shines a spotlight on harmony, teamwork, and open communication. You may benefit from collaborating with like-minded individuals who share your aspirations or values. By weaving your personal strengths together with mutual support, you’ll cultivate a nurturing environment that fosters both collective and individual advancement."
+  },
+  {
+    number: "3434",
+    meaning: "Seeing 3434 asks you to pair your dreams with consistent, grounded action. Fours emphasize practicality, organization, and discipline, while threes encourage creative flow. Balance these traits by planning effectively and staying inspired, trusting that each step you take builds momentum toward the fulfilling outcomes you envision."
+  },
+  {
+    number: "3535",
+    meaning: "The sequence 3535 often appears when you are being guided to welcome change and adapt to new circumstances with grace. It signals the presence of guardian energies that want to help you break free from self-imposed limitations. By focusing on curiosity rather than fear, you allow transformative experiences to shape your journey in empowering ways."
+  },
+  {
+    number: "3636",
+    meaning: "Repeated 3636 relates to the concept of nurturing relationships and establishing emotional well-being. The 6 invites compassion and unconditional love, while the 3 emphasizes expression and growth. Paying attention to how you communicate your feelings and needs can strengthen bonds, ensuring everyone feels supported, understood, and valued."
+  },
+  {
+    number: "3737",
+    meaning: "When 3737 catches your attention, it indicates you’re at a point of spiritual development and discovery. The 7 inspires deeper introspection, while the 3 propels you to share your wisdom once you’ve integrated it. This number encourages a balanced approach: immerse yourself in learning and then express what resonates with you, allowing your insights to uplift others as well."
+  },
+  {
+    number: "3838",
+    meaning: "Spotting 3838 is a nod to the abundant flow of resources and blessings, urging you to remain open to receiving. The 8 signifies material and financial well-being, while the 3 infuses optimism and creativity into your pursuits. By combining a confident mindset with gratitude, you create an energetic pathway for increased success and satisfaction in all areas of life."
+  },
+  {
+    number: "3939",
+    meaning: "Recurring 3939 appears when you’re encouraged to release burdens and step into a more liberated phase of life. The 9s signal endings and transformations, while the 3s remind you of the joy and growth that can come from letting go. Trust that by making space—physically, emotionally, or mentally—you will invite in fresh inspirations and deeper contentment."
+  },
+  {
+    number: "4040",
+    meaning: "Seeing 4040 emphasizes the value of persistence, strong foundations, and unwavering faith in your path. The zeroes amplify the energetic message of 4, suggesting that your dedication and steady approach will pay off. It’s also a subtle reassurance from the universe that even if progress feels slow, the structure you’re building will support your long-term success."
+  },
+  {
+    number: "4141",
+    meaning: "A pattern of 4141 suggests you listen to those subtle sparks of divine inspiration and transform them into concrete plans. The combination of 1’s boldness and 4’s stability gives you both the vision and discipline to follow through on your aspirations. Stay focused on what truly matters to you, and trust that the supportive forces around you will help bring your ideas to life."
+  },
+  {
+    number: "4242",
+    meaning: "Repeatedly encountering 4242 highlights the power of collaboration, loyalty, and mutual support. Its energy encourages you to assess the partnerships in your life—romantic, professional, or platonic—and ensure they uplift you. By nurturing connections that share aligned values and balanced give-and-take, you create a network of strength that propels everyone forward."
+  },
+  {
+    number: "4343",
+    meaning: "Noticing 4343 could be a hint that spiritual guidance is closer than ever, prompting you to remain open to signs and inner nudges. The presence of 3 suggests creativity and connection with higher realms, while the 4 stabilizes and grounds these insights. This angel number can also indicate that you’re receiving messages to fortify your faith, reinforcing your journey toward personal and spiritual goals."
+  },
+  {
+    number: "4545",
+    meaning: "When 4545 shows up, it signifies an era of personal evolution and the courage to walk your authentic path. The repeated 4 encourages you to be methodical and patient, while the 5 beckons you to explore freedom and adaptability. Merging these energies allows you to embrace necessary changes without losing your grounding or sense of direction."
+  },
+  {
+    number: "4646",
+    meaning: "The appearance of 4646 suggests seeking balance between logical reasoning and heartfelt compassion. This could involve finding the sweet spot where you honor your emotions without letting them overshadow practical realities. By fostering empathy and structure in equal measure, you’ll navigate challenges with clarity and connect with others on a more meaningful level."
+  },
+  {
+    number: "4747",
+    meaning: "Spotting 4747 often points to spiritual awakening and the nurturing of higher knowledge. The 7s encourage introspection and mystical exploration, while the 4s help ground these discoveries into your daily life. Consider focusing on meditation, self-study, or learning new spiritual modalities—these efforts can lead to profound shifts in perspective and personal empowerment."
+  },
+  {
+    number: "4848",
+    meaning: "When 4848 appears, it resonates with themes of gratitude, prosperity, and the cyclical nature of abundance. The 8s indicate material success or the potential for achievement, while the 4s promote stability and pragmatism. Reflect on how you can maintain a mindset of appreciation for what you already have, thus paving the way for continued blessings to flow your way."
+  },
+  {
+    number: "4949",
+    meaning: "Seeing 4949 reminds you that shedding old patterns is necessary for transformation and growth. The 9 brings closure and completion, and the 4 underscores the importance of methodical effort in letting go. Embrace this number as a sign that by releasing attachments with mindfulness and determination, you create space for more enriching experiences in life."
+  },
+  {
+    number: "5050",
+    meaning: "A recurring 5050 can signal a major turning point shaped by your willingness to embrace freedom and new possibilities. Zero’s infinite potential amplifies the transformative power of 5, suggesting that your choices right now can radically shift your life path. Stay flexible, keep faith, and remember that the universe rewards those who venture beyond the familiar with boldness and an open heart."
+  },
+  {
+    number: "5151",
+    meaning: "Observing 5151 indicates it’s time to channel your inner confidence and take the initiative in areas that matter most to you. The 1 invites leadership and fresh starts, while the 5 encourages adaptability and exploration. By trusting your capabilities and focusing on solutions, you’ll uncover doors you never knew existed and opportunities that align with your higher aspirations."
+  },
+  {
+    number: "5252",
+    meaning: "When 5252 surfaces, it calls on you to remain calm and trusting amidst ongoing changes. Twos emphasize balance and diplomacy, while fives champion progress and flexibility. Your angels may be encouraging you to act with patience and mutual understanding, knowing that the changes at hand can ultimately bring about more harmonious conditions if you stay centered."
+  },
+  {
+    number: "5353",
+    meaning: "The repeating 5353 inspires you to embrace fresh perspectives and express yourself in innovative, creative ways. The blend of 3’s artistic optimism and 5’s adaptable energy fosters a period of experimentation and personal expansion. Approach life with playful curiosity and a willingness to break old molds, thereby uncovering hidden talents and passions."
+  },
+  {
+    number: "5454",
+    meaning: "Seeing 5454 implies a need to fuse practicality with transformation. Fours anchor you in stability, while fives introduce an element of change. This angel number invites you to restructure aspects of your life—career, routines, or relationships—so they can evolve without losing the integrity or foundation you’ve already built."
+  },
+  {
+    number: "5656",
+    meaning: "When 5656 shows up, it brings attention to personal healing and wellness, urging you to address both the emotional and physical aspects of your life. The 6 resonates with compassion and equilibrium, while the 5 suggests progress and the release of limiting habits. By investing in proper self-care and nurturing your relationships, you cultivate an atmosphere where genuine healing can flourish."
+  },
+  {
+    number: "5757",
+    meaning: "A pattern of 5757 highlights introspection, spiritual knowledge, and the power of solitude in revealing deeper truths. The 7 encourages you to look inward for wisdom, and the 5 promotes growth through embracing new perspectives. Whether through journaling, meditation, or study, you’ll discover insights that guide you toward more enlightened choices and meaningful transformations."
+  },
+  {
+    number: "5858",
+    meaning: "If 5858 keeps appearing, it points to a surge in abundance, self-confidence, and purposeful manifestation. The 8 embodies prosperity and success, while the 5 stands for personal freedom and life changes. This number suggests aligning your ambitions with a sense of higher purpose and implementing tangible steps, opening the doors to heightened achievement and fulfillment."
+  },
+  {
+    number: "5959",
+    meaning: "Repeatedly noticing 5959 signals an opportunity to release old baggage and step into a lighter, more liberated version of yourself. The 9 endings pave the way for the new, and the 5 encourages curiosity and openness. This blend urges you to take a bold leap toward experiences that resonate with your evolving identity, trusting that you’re guided to shed what no longer matches your growth."
+  },
+  {
+    number: "6060",
+    meaning: "The sequence 6060 draws attention to compassion, unity, and the spiritual principle that we are all interconnected. Zeros amplify the nurturing energy of 6, reminding you that empathy and service to others can bring profound emotional rewards. As you give selflessly—yet maintain healthy boundaries—you’ll cultivate deeper bonds and a heightened sense of peace in your everyday life."
+  },
+  {
+    number: "6161",
+    meaning: "Spotting 6161 frequently highlights the transformative power of positive thinking and self-belief. The 1 resonates with leadership and creation, while the 6 underscores emotional warmth and harmony. By keeping your mindset optimistic and focusing on solutions rather than obstacles, you attract supportive circumstances that reinforce your confidence and propel you forward."
+  },
+  {
+    number: "6262",
+    meaning: "Encountering 6262 signals the importance of cooperation, mutual understanding, and thoughtful communication. It may be time to reassess partnerships—personal or professional—to ensure that everyone’s needs and perspectives are being acknowledged. When you nurture relationships built on kindness and respect, you establish a ripple effect of positive, sustainable growth."
+  },
+  {
+    number: "6363",
+    meaning: "When 6363 shows itself repeatedly, it highlights the creative and expressive dimensions of your life. The 3 calls for authenticity and open-hearted communication, while the 6 fosters empathy and love. By blending these energies, you can share your talents and passions in a way that uplifts both you and those around you, creating deeper connections through genuine expression."
+  },
+  {
+    number: "6464",
+    meaning: "Noticing 6464 is a reminder that consistent effort and responsible planning are vital for reaching your long-term goals. The 4 emphasizes structure and diligence, while the 6 adds a layer of compassion and nurturing. If you remain steadfast and maintain a balanced approach, you’ll see tangible progress and cultivate a supportive environment for the future you’re building."
+  },
+  {
+    number: "6565",
+    meaning: "Repeated 6565 often pertains to inner healing, forgiveness, and breaking free from negative cycles. The 5 stirs up change and encourages personal evolution, while the 6 symbolizes care and emotional well-being. This angel number invites you to mend emotional wounds and liberate yourself from past regrets, allowing space for a healthier and happier present."
+  },
+  {
+    number: "6767",
+    meaning: "A pattern of 6767 indicates that you’re being guided to delve into spiritual studies or higher learning. The 7 calls for introspection and wisdom, while the 6 fosters empathy and relational harmony. Balancing the pursuit of knowledge with compassion ensures that whatever insights you gain are used in service of both your own growth and the well-being of others."
+  },
+  {
+    number: "6868",
+    meaning: "Seeing 6868 suggests an impending improvement in financial stability and material comfort. The 8 promises abundance and success, while the 6 underscores the need for compassion and balance. This combination encourages generosity and gratitude, reminding you that when you share your blessings wholeheartedly, you create a reciprocal flow of prosperity."
+  },
+  {
+    number: "6969",
+    meaning: "The recurring 6969 prompts you to cultivate unconditional love, resolve family or interpersonal tensions, and strive for overall harmony in your environment. The 6 resonates with nurturing, while the 9 indicates closure and spiritual elevation. By practicing deep empathy and letting go of grievances, you pave the way for healthier, more loving connections."
+  },
+  {
+    number: "7070",
+    meaning: "When 7070 appears in your awareness, it signals a phase of deep reflection, introspection, and a willingness to explore your spiritual side. Zeros heighten the transcendental aspect, while the 7 calls you toward truth-seeking and wisdom. This number is an invitation to meditate, journal, or otherwise engage in soul-searching activities that illuminate your path and expand your consciousness."
+  },
+  {
+    number: "7171",
+    meaning: "Repeatedly encountering 7171 indicates that you’re awakening to your intuition and the subtle whispers of higher guidance. The 7 encourages spiritual discovery, while the 1 helps manifest new beginnings and personal power. By trusting your gut feelings and aligning your actions with this newfound clarity, you can make decisions that lead to positive, life-affirming outcomes."
+  },
+  {
+    number: "7272",
+    meaning: "Noticing 7272 often points to hidden support from the divine or angelic realms, gently guiding your steps. The 2 fosters balance and cooperation, while the 7 inspires deeper contemplation and self-awareness. Believe that behind the scenes, spiritual forces are working in your favor, helping you navigate transitions with grace and confidence."
+  },
+  {
+    number: "7373",
+    meaning: "When 7373 shows up, it underscores continuous growth in spiritual knowledge and the sharing of your insights. The 7 fosters wisdom and reflection, while the 3 encourages uplifting communication and joy. You may feel called to teach, mentor, or otherwise spread what you have learned, thereby inspiring others and solidifying your own spiritual progression."
+  },
+  {
+    number: "7474",
+    meaning: "The sequence 7474 emphasizes perseverance, practical problem-solving, and having faith in your innate capabilities. With the 7 urging deep reflection and the 4 grounding you in methodical action, you’re advised to combine introspection with consistent effort. By doing so, you steadily transform aspirations into tangible achievements while maintaining your spiritual integrity."
+  },
+  {
+    number: "7575",
+    meaning: "A recurring 7575 suggests a critical juncture where embracing change leads to profound learning experiences. The 5 can imply freedom and adventure, while the 7 highlights the wisdom gleaned from introspection. Lean into this period of evolution by remaining open-minded and curious—what you learn now can reshape your path in remarkable ways."
+  },
+  {
+    number: "7676",
+    meaning: "Seeing 7676 highlights the need to balance nurturing energy with mental discipline. While the 7 propels you toward self-examination and spiritual inquiry, the 6 centers on harmony and care. By developing both your inner and outer worlds—through reflection, healthy boundaries, and compassion—you set the stage for a more integrated, purposeful life."
+  },
+  {
+    number: "7878",
+    meaning: "The repetition of 7878 beckons you to embrace financial independence and self-confidence, trusting that your capabilities can lead you to success. The 8 resonates with abundance, while the 7 encourages deeper understanding of the spiritual and universal laws behind manifestation. Focus on learning from past mistakes, refining your approach, and boldly stepping into a mindset of prosperity."
+  },
+  {
+    number: "7979",
+    meaning: "Noticing 7979 indicates a period of introspection and release of limiting beliefs. The 9 fosters closure and surrender, while the 7 amplifies spiritual insight. This angel number challenges you to explore what mental or emotional patterns no longer serve you, encouraging a courageous leap into a clearer, more evolved version of yourself."
+  },
+  {
+    number: "8080",
+    meaning: "When 8080 appears, it resonates with infinite possibilities and the interplay of spiritual awareness with material success. Zeros spotlight the divine or cosmic aspect, while the 8 embodies achievement and personal power. By aligning your intentions with higher principles, you unleash a creative force that can draw opportunities and blessings into your sphere."
+  },
+  {
+    number: "8181",
+    meaning: "Repeated 8181 reminds you of your capacity for self-mastery, urging you to direct your thoughts, energy, and actions toward purposeful goals. The 8 invokes ambition and determination, while the 1 encourages new starts. This combination suggests that through strong will and clarity, you can manifest remarkable outcomes, provided you believe unwaveringly in your vision."
+  },
+  {
+    number: "8282",
+    meaning: "A pattern of 8282 signals the importance of unity, collaboration, and shared aspirations. The 8 highlights abundance and success, while the 2 places emphasis on harmony and mutual support. Whether in friendships, work relationships, or spiritual communities, fostering cooperative ties can lead to a balanced and prosperous environment for everyone involved."
+  },
+  {
+    number: "8383",
+    meaning: "Observing 8383 points to drawing upon your inner wisdom to maintain balance in giving and receiving. The 8 references the flow of material and energetic prosperity, while the 3 infuses joy and expansion. By honoring your worth and recognizing the value of others’ contributions, you create an empowering cycle that bolsters both self-esteem and interpersonal harmony."
+  },
+  {
+    number: "8484",
+    meaning: "When 8484 appears, it highlights the rewards of consistent, diligent work infused with a positive mindset. The 4 encourages practical strategies and reliability, while the 8 underscores the potential for significant progress or even financial gain. Stay committed to your path, refining your approach as necessary, and trust that your efforts will produce long-lasting results."
+  },
+  {
+    number: "8585",
+    meaning: "Recurring 8585 beckons you to be adaptable and resilient in the face of life’s inevitable twists. The 5 fosters exploration and openness to change, while the 8 solidifies the opportunity for growth and success. This mix of energies encourages you to see each challenge as a stepping stone, transforming potential setbacks into chances for breakthrough and reinvention."
+  },
+  {
+    number: "8686",
+    meaning: "Noticing 8686 suggests a merging of abundance with heartfelt compassion. The 8 symbolizes success and achievement, while the 6 emphasizes care, empathy, and healing. As you move toward greater material stability, remember that generosity and kindness magnify blessings, creating a positive feedback loop of prosperity and community support."
+  },
+  {
+    number: "8787",
+    meaning: "The sequence 8787 highlights spiritual insights, seeking knowledge, and transcending limiting worldviews. The 7 drives you to explore deeper truths, while the 8 amplifies the manifestation of your discoveries. By broadening your understanding—through study, dialogue, or introspection—you equip yourself to step into higher realms of personal and collective transformation."
+  },
+  {
+    number: "8989",
+    meaning: "Seeing 8989 repeatedly points to a phase of transitions, encouraging you to remain open to new horizons and the adventure of the unknown. The 8 supports material progress, while the 9 fosters letting go of outdated attachments. Together, they signal that as one chapter closes, you are poised to embrace fresh opportunities that resonate more deeply with your evolving self."
+  },
+  {
+    number: "9090",
+    meaning: "When 9090 appears, it signals major closures, forgiveness, and a rebirth of perspective. The 9 finalizes old cycles, and the zeroes represent endless potential and unity with the divine. You may find it’s time to reconcile differences or part ways with outdated energies, trusting that true release will clear a path for renewed hope, purpose, and a profound sense of liberation."
+  },
+  {
+    number: "9191",
+    meaning: "When 9191 appears, it merges the energy of 9—which signals endings, forgiveness, and humanitarianism—with the spark of 1, representing fresh starts and bold self-leadership. This number often arrives when you’re on the brink of letting go of heavy burdens and simultaneously stepping onto a path of new possibilities. The double 9 urges you to release resentments, regrets, or karmic loops that no longer serve your highest good, while the double 1 highlights the importance of self-belief in manifesting a brighter future. Taken together, 9191 can be seen as a bridge between what was and what can be, reminding you that by fully embracing closure, you clear the way for a transformative new beginning."
+  },
+  {
+    number: "9292",
+    meaning: "Seeing 9292 can be a powerful reminder of balancing compassion (the 9) with healthy boundaries and faith in your own decisions (the 2). The repeated 9s encourage you to acknowledge how far you’ve come—celebrate each emotional or spiritual lesson you’ve learned—and release any guilt or unresolved pain. Meanwhile, the 2s resonate with cooperation and harmony, nudging you to trust your ability to connect with others in a meaningful way while still standing firm in your truth. This combination suggests that while you let go of old burdens, you also open the door to partnerships, alliances, or supportive relationships that are built on authenticity and mutual respect."
+  },
+  {
+    number: "9393",
+    meaning: "The sequence of 9393 carries a heightened spiritual vibration, with the 9 indicating the completion of a cycle and the 3 symbolizing creativity, self-expression, and divine communication. Whenever you see this pattern, it’s a call to reflect on how you might leverage your spiritual insights (9) to bring more joy, inspiration, or artistic flair (3) into your daily life. The repeating 9s suggest you may be transcending outdated beliefs or fears, while the repeating 3s urge you to share your newfound wisdom in a way that uplifts and motivates others. Embracing 9393’s energy can help you fuse compassion with confident self-expression, leading to profound personal breakthroughs and a deeper sense of purpose."
+  },
+  {
+    number: "9494",
+    meaning: "Encountering 9494 prompts a balance between completion (9) and steady, practical progress (4). The 9s are a signal that certain chapters in your life are drawing to a close—possibly old relationships, mindsets, or stagnating projects—while the 4s highlight the necessity of building a stable foundation for your next phase. This number often surfaces when you’re asked to ground yourself, organize your priorities, and approach transitions with patience and diligence. By blending the reflective, forgiving nature of 9 with the disciplined, constructive traits of 4, you set yourself up to tackle future challenges confidently and nurture long-lasting achievements."
+  },
+  {
+    number: "9595",
+    meaning: "The energy of 9595 revolves around major transformation (9) guided by positive decision-making and curiosity (5). The repeated 9s could be calling you to break free from the final vestiges of past patterns—perhaps old fears, limiting beliefs, or unresolved ties—so that you can enter a new stage of personal growth. Meanwhile, the double 5 encourages you to remain adaptable, seek out fresh perspectives, and embrace a spirit of adventure. Together, 9595 can signify that exciting opportunities lie on the horizon, but they require letting go of comfort zones and trusting your inner compass. It’s a cosmic nudge to cultivate freedom and expansion while remaining compassionate toward yourself and others."
+  },
+  {
+    number: "9696",
+    meaning: "When 9696 shows up, it emphasizes universal love (9) and the nurturing aspects of home and family (6). The 9s point toward embracing altruism and empathy, urging you to consider how your actions can serve a greater good. At the same time, the 6s reflect the importance of harmony and emotional security, especially within close relationships or the spaces where you find solace. This combination can appear when you need to resolve conflicts at a heart level, offering forgiveness or understanding to yourself and others. Ultimately, 9696 speaks of compassion on a grand scale, reminding you that by attending to the emotional well-being of both yourself and those around you, you raise the collective vibration."
+  },
+  {
+    number: "9797",
+    meaning: "Seeing 9797 often suggests a spiritual turning point, with 9 urging completion and 7 indicating mystical insight and introspection. The repeating 9s might be pushing you to finalize key lessons or experiences, while the repeating 7s invite you to delve deeper into your spiritual or personal studies. This could be an ideal time to explore new philosophies, meditative practices, or esoteric traditions that resonate with your soul. 9797’s message is that as you let go of what no longer aligns with your higher calling, you make room for life-changing revelations and a stronger connection to the divine. It’s a pattern that gently nudges you to trust your inner wisdom and follow your intuitive breadcrumbs."
+  },
+  {
+    number: "9898",
+    meaning: "Whenever 9898 enters your awareness, it marks the end of one journey (9) and the announcement of financial, material, or energetic opportunities (8). The 9s may be prompting you to release old baggage—such as lack mindsets, regrets, or emotional blocks—so that your energy field is open to receive fresh abundance. Meanwhile, the 8s represent the flow of prosperity and the cyclical nature of giving and receiving. This number combination can be interpreted as a potent sign that once you’ve made peace with the past, you’ll be ready to claim the rewards you’ve been steadily working toward. 9898 reminds you that true wealth includes spiritual fulfillment, healthy self-worth, and a willingness to share your blessings."
+  },
+  {
+    number: "9999",
+    meaning: "Encountering 9999 is like a crescendo of closure and enlightenment. The quadruple 9 underscores the end of multiple layers of life lessons, inviting you to fully integrate all you’ve learned. It’s often seen as an indicator that you’re completing a profound chapter—perhaps resolving karmic debts, healing ancestral patterns, or solidifying a major shift in consciousness. Though endings can be challenging or bittersweet, 9999 arrives with the assurance that a renewed sense of clarity and purpose awaits you on the other side. This number invites you to have faith in your personal evolution and trust that releasing the old paves the way for a fresh narrative—one steeped in higher awareness, service, and spiritual growth."
+  }
+      // Feel free to add more angel numbers as needed
+    ];
+
+    // Get references to important DOM elements
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const resultArea = document.getElementById('resultArea');
+
+    // Search function
+    function searchAngelNumber() {
+      const userInput = searchInput.value.trim();
+
+      // Validate: Check if the input is a non-empty, numeric value
+      if (!/^\d+$/.test(userInput)) {
+        alert("Please input the numbers");
+        return;
+      }
+
+      // Search the dataset
+      const foundNumber = angelNumbers.find(item => item.number === userInput);
+
+      if (foundNumber) {
+        displayResult(foundNumber);
+      } else {
+        alert("Please input the numbers");
+      }
+    }
+
+    // Function to display the found angel number
+    function displayResult(angelNumberObj) {
+      // Clear any existing result
+      resultArea.innerHTML = "";
+
+      // Create a result card
+      const card = document.createElement('div');
+      card.classList.add('result-card');
+
+      card.innerHTML = `
+        <h2>Angel Number: ${angelNumberObj.number}</h2>
+        <p>${angelNumberObj.meaning}</p>
+      `;
+
+      resultArea.appendChild(card);
+    }
+
+    // Event listener for the search button
+    searchBtn.addEventListener('click', searchAngelNumber);
+
+    // Optional: Trigger search on Enter key
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        searchAngelNumber();
+      }
+    });
+  </script>
+</body>
+</html>
