@@ -1,0 +1,102 @@
+/* 全局样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  background: linear-gradient(135deg, #fef9e7 0%, #f9e4ad 100%);
+  color: #333;
+  line-height: 1.5;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+header {
+  text-align: center;
+  padding: 20px;
+  background: rgba(212, 172, 13, 0.85);
+  color: #fff;
+  font-size: 24px;
+}
+
+
+/* 📜 让 result-card 和 introduction 宽度一致 */
+.introduction,
+.result-card {
+  max-width: 750px; /* 让两者宽度相同 */
+  margin: 30px auto; /* 居中 */
+  background: rgba(255, 255, 255, 0.6);
+  border: 2px solid #ccb973;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+
+  /* 🔍 搜索框（让它居中在介绍里） */
+.search-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px; /* ✅ 确保它和介绍部分有间距 */
+}
+.search-container input {
+  width: 220px;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccb973;
+  border-radius: 4px;
+}
+.search-container button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #d4ac0d;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.search-container button:hover {
+  background-color: #b7950b;
+}
+  
+/* 📌 让整个页面填满屏幕，并保证 footer 贴底 */
+html, body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* 📌 让 main 自动填充剩余空间 */
+  main {
+    flex: 1;
+  }
+  
+  /* 🌍 让 Footer 固定到底部 */
+  footer {
+    text-align: center;
+    padding: 15px;
+    background: rgba(212, 172, 13, 0.85); /* 金色背景 */
+    color: white;
+    font-size: 0.9rem;
+    margin-top: auto;
+    width: 100%;
+  }
+  
+  footer nav {
+    margin-top: 8px;
+  }
+  
+  footer a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+  }
+  
+  footer a:hover {
+    text-decoration: underline;
+  }
+  
+  
